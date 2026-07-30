@@ -1,0 +1,71 @@
+services:
+  ctfd:
+    build: .
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - UPLOAD_FOLDER=/var/uploads
+      - DATABASE_URL=mysql+pymysql://ctfd:ctfd@db/ctfd
+      - REDIS_URL=redis://cache:6379
+      - WORKERS=1
+      - LOG_FOLDER=/var/log/CTFd
+      - ACCESS_LOG=-
+      - ERROR_LOG=-
+      - REVERSE_PROXY=true
+    volumes:
+      - uploads:/var/uploads
+    depends_on:
+      db:
+        condition: service_started
+      cache:
+        condition: service_started
+    networks:
+        default:
+        internal:
+
+  nginx:
+    image: nginx:stable
+    restart: always
+    volumes:
+      - ./conf/nginx/http.conf:/etc/nginx/nginx.conf:ro,z
+    ports:
+      - 80:80
+    depends_on:
+      - ctfd
+
+  db:
+    image: mariadb:10.11
+    restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD=ctfd
+      - MARIADB_USER=ctfd
+      - MARIADB_PASSWORD=ctfd
+      - MARIADB_DATABASE=ctfd
+      - MARIADB_AUTO_UPGRADE=1
+    volumes:
+      - db_data:/var/lib/mysql:z
+    networks:
+        internal:
+    # This command is required to set important mariadb defaults
+    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --wait_timeout=28800, --log-warnings=0]
+
+  cache:
+    image: redis:4
+    restart: always
+    volumes:
+    - cache_data:/data:z
+    networks:
+        internal:
+
+networks:
+    default:
+    internal:
+        internal: true
+
+# Named volumes — data persists across `docker-compose down` and rebuilds.
+# On AWS/Azure: back these up using EBS snapshots or Azure Disk Backup.
+volumes:
+  db_data:
+  cache_data:
+  uploads:

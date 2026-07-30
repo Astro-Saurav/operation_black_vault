@@ -1,0 +1,153 @@
+@layer components {
+  /* Secure Portal Terminal (Auth) */
+  
+  .obv-auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px);
+    padding: var(--spacing-4);
+    background: radial-gradient(circle at center, rgba(0, 229, 255, 0.03) 0%, transparent 70%);
+  }
+
+  .obv-auth-terminal {
+    width: 100%;
+    max-width: 500px;
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border-strong);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 15px rgba(0, 229, 255, 0.1);
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 2px;
+      background: var(--color-primary);
+      box-shadow: var(--shadow-glow);
+    }
+  }
+
+  .obv-auth-terminal__header {
+    background: rgba(0, 0, 0, 0.4);
+    padding: var(--spacing-4);
+    border-bottom: 1px solid var(--color-border-subtle);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    font-family: var(--font-display);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+
+    i {
+      color: var(--color-primary);
+    }
+  }
+
+  .obv-auth-terminal__body {
+    padding: var(--spacing-5);
+  }
+
+  .obv-auth-integrations {
+    margin-bottom: var(--spacing-5);
+  }
+
+  .obv-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: 2px;
+
+    &::before, &::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px dashed var(--color-border-subtle);
+    }
+    span {
+      padding: 0 var(--spacing-3);
+    }
+  }
+
+  .obv-auth-terminal__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--spacing-6);
+    padding-top: var(--spacing-4);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .obv-auth-submit {
+    min-width: 150px;
+  }
+
+  .obv-legal-notice {
+    text-align: center;
+    margin-top: var(--spacing-4);
+    font-family: var(--font-mono);
+    color: var(--color-text-muted);
+    
+    small {
+      font-size: var(--font-size-xs);
+    }
+  }
+
+  /* Secure Form Fields */
+  .obv-form-group {
+    margin-bottom: var(--spacing-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+  }
+
+  .obv-label {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+
+    i {
+      color: var(--color-primary);
+    }
+  }
+
+  .obv-input {
+    background-color: rgba(18, 19, 28, 0.8);
+    border: 1px solid var(--color-border-strong);
+    color: var(--color-primary);
+    font-family: var(--font-mono);
+    border-radius: var(--radius-none);
+    padding: var(--spacing-3) var(--spacing-4);
+    width: 100%;
+    transition: all var(--motion-duration-fast) var(--motion-ease-in-out);
+    
+    &:focus {
+      background-color: rgba(18, 19, 28, 1);
+      border-color: var(--color-primary);
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+      outline: none;
+    }
+    
+    &::placeholder {
+      color: var(--color-text-muted);
+      opacity: 0.5;
+    }
+  }
+
+  .obv-form-text {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    margin-top: var(--spacing-1);
+    display: block;
+  }
+}

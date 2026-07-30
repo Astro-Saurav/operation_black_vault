@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if request.path == '/' %}
+  <div class="obv-landing">
+    <!-- Simulated Map Background / Hex Grid -->
+    <div class="obv-landing__bg"></div>
+    
+    <div class="obv-landing__hero">
+      <div class="obv-landing__badge">
+        <i class="fas fa-shield-alt"></i> SYSTEM INITIALIZED
+      </div>
+      <h1 class="obv-landing__title">OPERATION <span>BLACK VAULT</span></h1>
+      <p class="obv-landing__subtitle">SECURE INTELLIGENCE & FORENSICS PLATFORM</p>
+      
+      <div class="obv-landing__actions">
+        {% if authed() %}
+          <a class="obv-btn obv-btn--primary obv-btn--lg" href="{{ url_for('challenges.listing') }}">
+            {% trans %}ACCESS MISSION BOARD{% endtrans %}
+          </a>
+        {% else %}
+          <a class="obv-btn obv-btn--primary obv-btn--lg" href="{{ url_for('auth.register') }}">
+            {% trans %}REQUEST CLEARANCE{% endtrans %}
+          </a>
+          <a class="obv-btn obv-btn--info obv-btn--lg" href="{{ url_for('auth.login') }}">
+            {% trans %}AUTHENTICATE{% endtrans %}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+    
+    <!-- Mission Lore / Briefing -->
+    <div class="obv-landing__content">
+      <div class="obv-intel-doc">
+        <div class="obv-intel-doc__header">
+          <div class="obv-intel-doc__classification obv-text-primary">
+            <i class="fas fa-shield-alt"></i> SYSTEM ALERT
+          </div>
+        </div>
+        <div class="obv-intel-doc__body text-center py-5">
+          <h2 class="obv-text-primary mb-4" style="font-weight: 700; font-size: 2.5rem; text-transform: uppercase; letter-spacing: 2px;">0217 HOURS: TOTAL BLACKOUT.</h2>
+          
+          <p class="obv-animate-entry" style="font-size: 1.2rem; color: var(--color-text-secondary);">
+            Classified exploits and zero-days vanished. The Black Vault is compromised.<br>
+            Hostile signature identified: <strong class="obv-text-primary">"SHADOW CIPHER"</strong>
+          </p>
+          
+          <hr class="obv-animate-entry my-4" style="border-color: #333;">
+
+          <h3 class="obv-animate-entry obv-text-primary mb-3" style="letter-spacing: 2px;">THIS IS NOT A TRAINING EXERCISE.</h3>
+          
+          <p class="obv-animate-entry" style="color: var(--color-text-muted);">
+            As a CIRT operative, your orders are absolute:<br>
+            <strong>Track the intrusion. Crack the comms. Secure the Vault.</strong>
+          </p>
+          
+          <div class="obv-animate-entry mt-5">
+            <h4 class="obv-text-primary" style="letter-spacing: 1px;">YOU HAVE A GREEN LIGHT TO ENGAGE.</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <!-- Generic Custom Pages — styled like landing page box -->
+  <div class="obv-container obv-page" style="margin-top: 60px; margin-bottom: 60px;">
+    <div class="obv-intel-doc">
+      {% if title %}
+      <!-- Header strip -->
+      <div class="obv-intel-doc__header">
+        <div class="obv-intel-doc__classification obv-text-primary">
+          <i class="fas fa-file-alt"></i> CLASSIFIED DOCUMENT &nbsp;|&nbsp; OPERATOR CLEARANCE REQUIRED
+        </div>
+      </div>
+
+      <!-- Big title area -->
+      <div style="
+        padding: 32px 32px 20px 32px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      ">
+        <h1 style="
+          font-family: var(--font-display);
+          font-size: clamp(1.8rem, 4vw, 3rem);
+          font-weight: 700;
+          color: var(--color-text-primary);
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          margin: 0 0 12px 0;
+          line-height: 1.1;
+        ">
+          <span style="color: var(--color-primary);">&#9632;</span>&nbsp;{{ title | upper }}
+        </h1>
+      </div>
+      {% endif %}
+
+      <!-- Page Body — content unchanged -->
+      <div class="obv-intel-doc__body" style="max-height: 75vh; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--color-danger) var(--color-bg-surface); padding: 28px 32px;">
+        {{ content | safe }}
+      </div>
+    </div>
+  </div>
+
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+  {{ Assets.js("assets/js/page.js") }}
+{% endblock %}

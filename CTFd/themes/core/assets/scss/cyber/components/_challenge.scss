@@ -1,0 +1,265 @@
+@layer components {
+  .obv-page-header {
+    background: rgba(15, 20, 28, 0.4);
+    backdrop-filter: blur(12px);
+    padding: var(--spacing-8) 0 var(--spacing-6) 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: var(--spacing-5);
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--color-primary) 50%, transparent);
+      opacity: 0.5;
+    }
+  }
+
+  .obv-page-header__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--spacing-2);
+    }
+  }
+
+  .obv-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+
+    i {
+      color: var(--color-primary);
+    }
+  }
+
+  .obv-page-header__meta {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    display: flex;
+    gap: var(--spacing-2);
+    opacity: 0.8;
+  }
+
+  .obv-loader-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+  }
+
+  .obv-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-3);
+    color: var(--color-primary);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    letter-spacing: 2px;
+
+    i {
+      font-size: var(--font-size-4xl);
+    }
+  }
+
+  .obv-categories {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+  }
+
+  .obv-category__header {
+    margin-bottom: var(--spacing-4);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+
+    h3 {
+      font-family: var(--font-display);
+      font-size: var(--font-size-lg);
+      color: var(--color-text-primary);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin: 0;
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      &::before {
+        content: '// DIRECTIVE: ';
+        color: var(--color-primary);
+        margin-right: var(--spacing-2);
+        font-family: var(--font-mono);
+        font-size: var(--font-size-sm);
+        letter-spacing: 2px;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .obv-category__line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--color-primary), transparent);
+    opacity: 0.6;
+    box-shadow: 0 0 10px var(--color-primary);
+  }
+
+  .obv-dossier {
+    background: rgba(10, 15, 25, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    padding: var(--spacing-4);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: visible;
+    min-height: 180px;
+    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(0, 229, 255, 0.05);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--color-warning);
+      box-shadow: 0 0 15px var(--color-warning);
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, rgba(0,229,255,0.1) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    &.is-solved::before {
+      background: var(--color-success);
+      box-shadow: 0 0 15px var(--color-success);
+    }
+
+    &:hover, &:focus-visible {
+      transform: translateY(-8px) scale(1.05);
+      background: rgba(15, 25, 45, 0.9);
+      border-color: var(--color-primary);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), inset 0 0 60px rgba(0, 229, 255, 0.15);
+      z-index: 10;
+
+      &::after {
+        background: linear-gradient(135deg, rgba(0,229,255,0.3) 0%, transparent 100%);
+        box-shadow: 0 0 20px var(--color-primary);
+      }
+
+      .obv-dossier__name {
+        color: #fff;
+        text-shadow: 0 0 20px rgba(0, 229, 255, 1);
+        letter-spacing: 4px;
+      }
+    }
+  }
+
+  .obv-dossier__seal {
+    position: absolute;
+    top: var(--spacing-2);
+    right: var(--spacing-2);
+    width: 20px;
+    height: 20px;
+    border: 1px dashed var(--color-text-muted);
+    border-radius: 50%;
+    opacity: 0.3;
+  }
+
+  .obv-dossier.is-solved .obv-dossier__seal {
+    border-color: var(--color-success);
+    border-style: solid;
+    background: rgba(0, 255, 102, 0.1);
+    opacity: 1;
+  }
+
+  .obv-dossier__header {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-3);
+  }
+
+  .obv-dossier__points {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .obv-dossier__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .obv-dossier__name {
+    font-family: var(--font-display);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 var(--spacing-2) 0;
+    transition: all var(--motion-duration-fast);
+  }
+
+  .obv-dossier__status {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    letter-spacing: 1px;
+    font-weight: var(--font-weight-bold);
+  }
+
+  .obv-dossier__footer {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-border-subtle);
+    padding-top: var(--spacing-3);
+    margin-top: var(--spacing-3);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    transition: color var(--motion-duration-fast);
+  }
+
+  .obv-dossier:hover .obv-dossier__footer {
+    color: var(--color-primary);
+  }
+}

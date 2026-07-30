@@ -1,0 +1,100 @@
+@layer tokens {
+  :root {
+    // Brand Colors
+    --color-primary: #00E5FF; // Electric Cyan
+    --color-primary-hover: #00B3CC;
+    --color-secondary: #007BFF; // Azure Blue
+    --color-accent: #00E5FF;
+    
+    // Semantic Colors
+    --color-success: #00FF66; // Green
+    --color-info: #007BFF;
+    --color-warning: #FFB300; // Amber
+    --color-danger: #FF3333; // Critical Red
+    
+    // Backgrounds (Operation Black Vault Dark Theme)
+    --color-bg-base: #07090F;
+    --color-bg-surface: rgba(20, 25, 35, 0.4);
+    --color-bg-elevated: rgba(30, 38, 50, 0.6);
+    --color-bg-panel: rgba(15, 20, 28, 0.5);
+    --color-bg-card: rgba(25, 32, 45, 0.4);
+    
+    // Text
+    --color-text-primary: #FFFFFF;
+    --color-text-secondary: #A0A4B8;
+    --color-text-muted: #6B6F85;
+    
+    // Borders
+    --color-border-subtle: #2B3A4A;
+    --color-border-strong: #3A4C62;
+    --color-border-accent: var(--color-primary);
+    
+    // Spacing (4px grid)
+    --spacing-1: 0.25rem;  // 4px
+    --spacing-2: 0.5rem;   // 8px
+    --spacing-3: 0.75rem;  // 12px
+    --spacing-4: 1rem;     // 16px
+    --spacing-5: 1.5rem;   // 24px
+    --spacing-6: 2rem;     // 32px
+    --spacing-8: 3rem;     // 48px
+    --spacing-10: 4rem;    // 64px
+    --spacing-12: 6rem;    // 96px
+    
+    // Typography
+    // Fallbacks included; web fonts will be loaded in typography.scss
+    --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Roboto Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+    --font-display: 'Inter', system-ui, sans-serif;
+    
+    // Font Sizes
+    --font-size-xs: 0.75rem;     // 12px
+    --font-size-sm: 0.875rem;    // 14px
+    --font-size-base: 1rem;      // 16px
+    --font-size-lg: 1.125rem;    // 18px
+    --font-size-xl: 1.25rem;     // 20px
+    --font-size-2xl: 1.5rem;     // 24px
+    --font-size-3xl: 1.875rem;   // 30px
+    --font-size-4xl: 2.25rem;    // 36px
+    --font-size-5xl: 3rem;       // 48px
+    
+    // Font Weights
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    
+    // Shadows
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5), 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-glow: 0 0 15px rgba(58, 124, 165, 0.4);
+    
+    // Border Radius
+    --radius-sm: 0.125rem;   // 2px
+    --radius-md: 0.25rem;    // 4px
+    --radius-lg: 0.5rem;     // 8px
+    --radius-full: 9999px;
+    
+    // Motion Timings
+    --motion-duration-instant: 0ms;
+    --motion-duration-fast: 180ms;
+    --motion-duration-medium: 280ms;
+    --motion-duration-slow: 450ms;
+    --motion-duration-hero: 800ms;
+    
+    // Motion Easings
+    --motion-ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+    --motion-ease-in-out: cubic-bezier(0.4, 0.0, 0.2, 1);
+    --motion-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --motion-decelerate: cubic-bezier(0.0, 0.0, 0.0, 1);
+    
+    // Z-Index
+    --z-background: -10;
+    --z-base: 0;
+    --z-content: 10;
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-modal: 1000;
+    --z-toast: 2000;
+  }
+}

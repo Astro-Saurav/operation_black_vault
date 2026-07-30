@@ -1,0 +1,221 @@
+@layer components {
+  /* Agent Dossier (Profile Page) */
+  
+  .obv-dossier {
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border-subtle);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-bottom: var(--spacing-6);
+  }
+
+  .obv-dossier__header {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 229, 255, 0.05));
+    border-bottom: 2px solid var(--color-primary);
+    padding: var(--spacing-6);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; width: 150px; height: 100%;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(0, 229, 255, 0.03) 10px,
+        rgba(0, 229, 255, 0.03) 20px
+      );
+    }
+  }
+
+  .obv-dossier__classification {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-warning);
+    letter-spacing: 2px;
+    margin-bottom: var(--spacing-4);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+  }
+
+  .obv-dossier__title-group {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-4);
+    margin-bottom: var(--spacing-4);
+    flex-wrap: wrap;
+  }
+
+  .obv-dossier__title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-black);
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+  }
+
+  .obv-dossier__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-5);
+  }
+
+  .obv-dossier__custom-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-4);
+    margin-bottom: var(--spacing-5);
+    padding: var(--spacing-4);
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px dashed var(--color-border-subtle);
+  }
+
+  .obv-dossier__stats {
+    display: flex;
+    gap: var(--spacing-6);
+    margin-bottom: var(--spacing-5);
+    flex-wrap: wrap;
+  }
+
+  .obv-stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+
+    &--lg {
+      .obv-stat__value {
+        font-size: var(--font-size-2xl);
+        font-family: var(--font-display);
+        font-weight: var(--font-weight-bold);
+      }
+    }
+  }
+
+  .obv-stat__label {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    letter-spacing: 1px;
+  }
+
+  .obv-stat__value {
+    font-family: var(--font-base);
+    font-size: var(--font-size-md);
+    color: var(--color-text-primary);
+  }
+
+  .obv-dossier__body {
+    padding: var(--spacing-6);
+  }
+
+  /* Awards */
+  .obv-card--award {
+    text-align: center;
+    padding: var(--spacing-4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-2);
+
+    .obv-card__icon {
+      color: var(--color-warning);
+      margin-bottom: var(--spacing-2);
+    }
+
+    .obv-card__title {
+      font-weight: var(--font-weight-bold);
+      font-size: var(--font-size-md);
+    }
+
+    .obv-card__meta {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-secondary);
+    }
+
+    .obv-card__score {
+      font-family: var(--font-mono);
+      color: var(--color-success);
+      margin-top: auto;
+    }
+  }
+
+  /* Telemetry / Charts */
+  .obv-card--chart {
+    background: rgba(0, 0, 0, 0.3);
+    padding: var(--spacing-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+
+  .obv-card__subtitle {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    letter-spacing: 1px;
+    margin: 0;
+  }
+
+  .obv-progress-bar {
+    display: flex;
+    height: 12px;
+    background: var(--color-bg-dark);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .obv-progress-bar__fill {
+    height: 100%;
+    transition: width var(--motion-duration-normal) var(--motion-ease-in-out);
+  }
+
+  .obv-chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-4);
+    margin-top: var(--spacing-3);
+  }
+
+  .obv-legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    
+    i {
+      font-size: 8px;
+    }
+  }
+
+  .obv-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--color-primary);
+    gap: var(--spacing-3);
+    font-family: var(--font-mono);
+    letter-spacing: 2px;
+  }
+
+  .obv-empty-state {
+    text-align: center;
+    padding: var(--spacing-8);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    letter-spacing: 2px;
+
+    i {
+      font-size: 3rem;
+      margin-bottom: var(--spacing-4);
+      opacity: 0.2;
+    }
+  }
+}

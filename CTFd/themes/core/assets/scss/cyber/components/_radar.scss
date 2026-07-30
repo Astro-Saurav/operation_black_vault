@@ -1,0 +1,32 @@
+@layer components {
+  .obv-radar {
+    position: fixed;
+    top: -20%;
+    right: -20%;
+    width: 100vh;
+    height: 100vh;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 229, 255, 0.1);
+    background: radial-gradient(circle, rgba(0,229,255,0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 50%;
+      height: 50%;
+      background: conic-gradient(from 0deg, transparent 70%, rgba(0, 229, 255, 0.3) 100%);
+      transform-origin: 0 0;
+      animation: radar-spin 4s linear infinite;
+    }
+  }
+
+  @keyframes radar-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+}

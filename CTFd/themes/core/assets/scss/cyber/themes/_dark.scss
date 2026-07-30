@@ -1,0 +1,14 @@
+@layer themes {
+  // Dark theme is the default and only theme for Operation Black Vault
+  // This file is a placeholder in case we ever need to override variables
+  // explicitly when a data-theme attribute is toggled.
+  :root[data-theme="dark"],
+  .cyber-theme {
+    // Re-asserting core dark theme colors just to be safe
+    --color-bg-base: #0A0A0E;
+    --color-bg-surface: #12131C;
+    --color-bg-panel: #1B1C26;
+    
+    color-scheme: dark;
+  }
+}

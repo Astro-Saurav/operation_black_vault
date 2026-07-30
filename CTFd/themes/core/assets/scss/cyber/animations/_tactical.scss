@@ -1,0 +1,118 @@
+@layer utilities {
+  /* CRT Scanline Overlay */
+  .obv-crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    background: linear-gradient(
+      rgba(18, 16, 16, 0) 50%, 
+      rgba(0, 0, 0, 0.1) 50%
+    );
+    background-size: 100% 4px;
+    animation: scanlines 10s linear infinite;
+    opacity: 0.3;
+  }
+
+  /* Glitch Text Effect */
+  .obv-glitch {
+    position: relative;
+    display: inline-block;
+    
+    &::before, &::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--color-bg-base);
+    }
+    
+    &::before {
+      left: 2px;
+      text-shadow: -2px 0 red;
+      clip: rect(24px, 550px, 90px, 0);
+      animation: glitch-anim 3s infinite linear alternate-reverse;
+    }
+    
+    &::after {
+      left: -2px;
+      text-shadow: -2px 0 cyan;
+      clip: rect(85px, 550px, 140px, 0);
+      animation: glitch-anim 2.5s infinite linear alternate-reverse;
+    }
+  }
+
+  /* Tactical Pulse */
+  .obv-pulse {
+    animation: tactical-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Typing Animation (Fade In Slide Up sequence) */
+  .obv-intel-doc__body p,
+  .obv-list li {
+    animation: slide-up-fade 0.5s ease-out forwards;
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  @for $i from 1 through 20 {
+    .obv-intel-doc__body p:nth-child(#{$i}),
+    .obv-list li:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.1s};
+    }
+  }
+}
+
+@keyframes scanlines {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100vh;
+  }
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(6px, 9999px, 86px, 0); }
+  5% { clip: rect(98px, 9999px, 47px, 0); }
+  10% { clip: rect(60px, 9999px, 20px, 0); }
+  15% { clip: rect(20px, 9999px, 66px, 0); }
+  20% { clip: rect(4px, 9999px, 40px, 0); }
+  25% { clip: rect(85px, 9999px, 3px, 0); }
+  30% { clip: rect(26px, 9999px, 87px, 0); }
+  35% { clip: rect(92px, 9999px, 96px, 0); }
+  40% { clip: rect(51px, 9999px, 15px, 0); }
+  45% { clip: rect(96px, 9999px, 5px, 0); }
+  50% { clip: rect(31px, 9999px, 64px, 0); }
+  55% { clip: rect(10px, 9999px, 82px, 0); }
+  60% { clip: rect(78px, 9999px, 12px, 0); }
+  65% { clip: rect(89px, 9999px, 49px, 0); }
+  70% { clip: rect(48px, 9999px, 56px, 0); }
+  75% { clip: rect(38px, 9999px, 93px, 0); }
+  80% { clip: rect(64px, 9999px, 10px, 0); }
+  85% { clip: rect(15px, 9999px, 25px, 0); }
+  90% { clip: rect(84px, 9999px, 34px, 0); }
+  95% { clip: rect(71px, 9999px, 67px, 0); }
+  100% { clip: rect(9px, 9999px, 88px, 0); }
+}
+
+@keyframes tactical-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes slide-up-fade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

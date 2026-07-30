@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="obv-auth-page">
+    <div class="obv-auth-terminal">
+      <div class="obv-auth-terminal__header">
+        <i class="fas fa-user-plus"></i>
+        <span>SECURE GATEWAY : REQUEST CLEARANCE</span>
+      </div>
+      
+      <div class="obv-auth-terminal__body">
+        {% include "components/errors.html" %}
+
+        {% if integrations.mlc() %}
+          <div class="obv-auth-integrations">
+            <a class="obv-btn obv-btn--info w-100 mb-4" href="{{ url_for('auth.oauth_login') }}">
+              <i class="fas fa-satellite"></i> AUTHENTICATE VIA MAJOR LEAGUE CYBER
+            </a>
+            <div class="obv-divider"><span>OR</span></div>
+          </div>
+        {% endif %}
+
+        {% with form = Forms.auth.RegistrationForm() %}
+          {% from "macros/forms.html" import render_extra_fields %}
+          
+          <form method="post" accept-charset="utf-8" role="form" class="obv-form">
+            <div class="obv-form-group">
+              <label class="obv-label">
+                <i class="fas fa-id-badge"></i> {{ form.name.label.text }} <span class="obv-text-danger">*</span>
+              </label>
+              {{ form.name(class="obv-input obv-input--block", value=name, autocomplete="username", placeholder="ENTER_AGENT_ALIAS") }}
+              <small class="obv-form-text">{% trans %}Your designated codename on the network{% endtrans %}</small>
+            </div>
+
+            <div class="obv-form-group">
+              <label class="obv-label">
+                <i class="fas fa-envelope"></i> {{ form.email.label.text }} <span class="obv-text-danger">*</span>
+              </label>
+              {{ form.email(class="obv-input obv-input--block", value=email, autocomplete="email", placeholder="ENTER_SECURE_COMMS_ADDRESS") }}
+              <small class="obv-form-text">{% trans %}Classified. Will not be broadcasted.{% endtrans %}</small>
+            </div>
+
+            <div class="obv-form-group">
+              <label class="obv-label">
+                <i class="fas fa-key"></i> {{ form.password.label.text }} <span class="obv-text-danger">*</span>
+              </label>
+              {{ form.password(class="obv-input obv-input--block", value=password, autocomplete="new-password", placeholder="CREATE_PASSPHRASE") }}
+              <small class="obv-form-text">{% trans %}Encryption key for terminal access{% endtrans %}</small>
+            </div>
+
+            {{ form.nonce() }}
+            
+            <div class="obv-extra-fields">
+              {{ render_extra_fields(form.extra) }}
+            </div>
+
+            <div class="obv-auth-terminal__footer">
+              <div></div>
+              {{ form.submit(class="obv-btn obv-btn--primary obv-auth-submit") }}
+            </div>
+
+            {% if Configs.tos_or_privacy %}
+              <div class="obv-legal-notice">
+                <small>
+                  {% trans trimmed privacy_link=Configs.privacy_link, tos_link=Configs.tos_link %}
+                  By initializing clearance, you agree to the
+                  <a class="obv-link" href="{{ privacy_link }}" target="_blank">privacy policy</a>
+                  and <a class="obv-link" href="{{ tos_link }}" target="_blank">terms of service</a>
+                  {% endtrans %}
+                </small>
+              </div>
+            {% endif %}
+          </form>
+        {% endwith %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

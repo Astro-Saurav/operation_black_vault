@@ -1,0 +1,446 @@
+/* Modal / Intelligence Doc Override */
+
+.obv-intel-doc {
+  background: rgba(15, 20, 28, 0.4); // More translucent background
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1); // Simple clean border instead of glowing
+  border-radius: var(--radius-md);
+  padding: var(--spacing-5);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  color: var(--color-text-primary);
+}
+
+  .obv-intel-doc__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-3) var(--spacing-4);
+    background: rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .obv-intel-doc__classification {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-danger);
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+  }
+
+  .obv-intel-doc__close {
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-lg);
+    cursor: pointer;
+    transition: color var(--motion-duration-fast);
+    
+    &:hover, &:focus-visible {
+      color: var(--color-primary);
+      outline: none;
+    }
+  }
+
+  /* Nav Tabs overrides for intel doc */
+  .obv-intel-doc__nav-wrapper {
+    background: var(--color-bg-elevated);
+    border-bottom: 1px solid var(--color-border-strong);
+    padding: 0 var(--spacing-4);
+  }
+
+  .obv-intel-tabs {
+    border-bottom: none;
+    display: flex;
+    gap: var(--spacing-2);
+    margin: 0;
+    padding: 0;
+  }
+
+  .obv-intel-tab {
+    margin-bottom: -1px;
+  }
+
+  .obv-intel-tab__link {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-text-secondary);
+    background: transparent;
+    border: 1px solid transparent;
+    border-bottom: 2px solid transparent;
+    padding: var(--spacing-3) var(--spacing-4);
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    transition: all var(--motion-duration-fast);
+
+    &:hover {
+      color: var(--color-primary);
+      border-color: transparent;
+    }
+
+    &.active {
+      color: var(--color-primary);
+      background: var(--color-bg-panel);
+      border-color: var(--color-border-strong) var(--color-border-strong) var(--color-bg-panel);
+      border-bottom: 2px solid var(--color-primary);
+    }
+  }
+
+  .obv-intel-doc__body {
+    padding: var(--spacing-5) var(--spacing-6);
+    max-height: 70vh;
+    overflow-y: auto;
+    
+    /* custom scrollbar */
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      background: var(--color-bg-surface);
+    }
+    &::-webkit-scrollbar-thumb {
+      background: var(--color-border-strong);
+      border-radius: 3px;
+    }
+  }
+
+  /* Intel Mission Info */
+  .obv-intel-mission-info {
+    text-align: center;
+    margin-bottom: var(--spacing-5);
+    padding-bottom: var(--spacing-4);
+    border-bottom: 1px dashed var(--color-border-subtle);
+  }
+
+  .obv-intel-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 0 0 var(--spacing-2) 0;
+    text-shadow: var(--shadow-glow);
+  }
+
+  .obv-intel-meta {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-4);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+  }
+
+  .obv-intel-value {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .obv-intel-author {
+    color: var(--color-text-secondary);
+  }
+
+  .obv-intel-tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+    margin-top: var(--spacing-3);
+  }
+
+  .obv-tag {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    background: rgba(0, 229, 255, 0.1);
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+
+  .obv-intel-desc {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-5);
+
+    a {
+      color: var(--color-primary);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--color-primary);
+      &:hover {
+        color: var(--color-secondary);
+        border-bottom-style: solid;
+      }
+    }
+  }
+
+  .obv-intel-connection {
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 3px solid var(--color-secondary);
+    padding: var(--spacing-3);
+    margin-bottom: var(--spacing-5);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+  }
+
+  .obv-intel-connection__label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-1);
+    text-transform: uppercase;
+  }
+
+  .obv-intel-section-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-lg);
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 var(--spacing-3) 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+    padding-bottom: var(--spacing-2);
+  }
+
+  .obv-intel-hints__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-5);
+  }
+
+  .obv-intel-details {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-strong);
+    border-radius: 2px;
+    
+    summary {
+      font-family: var(--font-mono);
+      font-size: var(--font-size-sm);
+      padding: var(--spacing-3);
+      cursor: pointer;
+      color: var(--color-text-secondary);
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      
+      &:hover {
+        color: var(--color-primary);
+        background: rgba(0, 229, 255, 0.05);
+      }
+    }
+
+    &[open] summary {
+      border-bottom: 1px dashed var(--color-border-subtle);
+      color: var(--color-primary);
+    }
+  }
+
+  .obv-intel-details__content {
+    padding: var(--spacing-3);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+  }
+
+  .obv-intel-files__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-5);
+  }
+
+  .obv-file-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-strong);
+    padding: var(--spacing-3);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    transition: all var(--motion-duration-fast);
+
+    i {
+      color: var(--color-primary);
+      font-size: var(--font-size-base);
+    }
+
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &:hover {
+      background: var(--color-primary);
+      color: #000;
+      border-color: var(--color-primary);
+      i { color: #000; }
+    }
+  }
+
+  .obv-intel-terminal {
+    background: #000;
+    border: 1px solid var(--color-border-accent);
+    padding: var(--spacing-4);
+    margin-bottom: var(--spacing-4);
+  }
+
+  .obv-terminal-attempts {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-warning);
+    text-align: right;
+    margin-bottom: var(--spacing-2);
+  }
+
+  .obv-terminal-input-group {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--color-border-strong);
+    background: rgba(0, 0, 0, 0.5);
+
+    &:focus-within {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+    }
+  }
+
+  .obv-terminal-prompt {
+    padding: var(--spacing-3);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-success);
+    user-select: none;
+    display: flex;
+    align-items: center;
+  }
+
+  .obv-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--color-text-primary);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-3) 0;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::placeholder {
+      color: var(--color-text-muted);
+    }
+  }
+
+  .obv-btn {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    padding: var(--spacing-2) var(--spacing-4);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all var(--motion-duration-fast);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2);
+
+    &--primary {
+      background: rgba(0, 229, 255, 0.1);
+      color: var(--color-primary);
+      border-color: var(--color-primary);
+      
+      &:hover {
+        background: var(--color-primary);
+        color: #000;
+        box-shadow: var(--shadow-glow);
+      }
+    }
+
+    &--info {
+      background: rgba(140, 0, 255, 0.1);
+      color: var(--color-secondary);
+      border-color: var(--color-secondary);
+      
+      &:hover {
+        background: var(--color-secondary);
+        color: #fff;
+      }
+    }
+
+    &--icon {
+      background: transparent;
+      padding: var(--spacing-2);
+      border-color: var(--color-border-strong);
+      color: var(--color-text-secondary);
+      
+      &:hover, &.is-active {
+        border-color: currentColor;
+        color: var(--color-primary);
+      }
+    }
+
+    &--xs {
+      font-size: var(--font-size-xs);
+      padding: var(--spacing-1) var(--spacing-2);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .obv-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-3);
+    padding: var(--spacing-3);
+    border: 1px solid transparent;
+    border-left-width: 4px;
+    background: rgba(0, 0, 0, 0.4);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    margin-top: var(--spacing-4);
+
+    &__icon {
+      font-size: var(--font-size-xl);
+    }
+
+    &--success {
+      border-color: var(--color-success);
+      color: var(--color-success);
+    }
+
+    &--danger {
+      border-color: var(--color-danger);
+      color: var(--color-danger);
+    }
+
+    &--info {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    &--warning {
+      border-color: var(--color-warning);
+      color: var(--color-warning);
+  }
+    }

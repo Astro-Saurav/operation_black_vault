@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="obv-auth-page">
+    <div class="obv-auth-terminal">
+      <div class="obv-auth-terminal__header">
+        <i class="fas fa-lock"></i>
+        <span>SECURE GATEWAY : LOGIN</span>
+      </div>
+      
+      <div class="obv-auth-terminal__body">
+        {% include "components/errors.html" %}
+
+        {% if integrations.mlc() %}
+          <div class="obv-auth-integrations">
+            <a class="obv-btn obv-btn--info w-100 mb-4" href="{{ url_for('auth.oauth_login') }}">
+              <i class="fas fa-satellite"></i> LOGIN VIA MAJOR LEAGUE CYBER
+            </a>
+            <div class="obv-divider"><span>OR</span></div>
+          </div>
+        {% endif %}
+
+        {% with form = Forms.auth.LoginForm() %}
+          <form method="post" accept-charset="utf-8" class="obv-form">
+            <div class="obv-form-group">
+              <label class="obv-label">
+                <i class="fas fa-user-secret"></i> {{ form.name.label.text }} <span class="obv-text-danger">*</span>
+              </label>
+              {{ form.name(class="obv-input obv-input--block", value=name, autocomplete="username email", placeholder="ENTER_CREDENTIAL_ID") }}
+            </div>
+
+            <div class="obv-form-group">
+              <label class="obv-label">
+                <i class="fas fa-key"></i> {{ form.password.label.text }} <span class="obv-text-danger">*</span>
+              </label>
+              {{ form.password(class="obv-input obv-input--block", value=password, autocomplete="current-password", placeholder="ENTER_PASSPHRASE") }}
+            </div>
+
+            <div class="obv-auth-terminal__footer">
+              <a class="obv-link obv-text-sm" href="{{ url_for('auth.reset_password') }}">
+                <i class="fas fa-question-circle"></i> {% trans %}FORGOT PASSPHRASE?{% endtrans %}
+              </a>
+
+              {{ form.submit(class="obv-btn obv-btn--primary obv-auth-submit") }}
+            </div>
+
+            {{ form.nonce() }}
+          </form>
+        {% endwith %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

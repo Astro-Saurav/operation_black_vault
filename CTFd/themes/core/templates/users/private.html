@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="obv-container">
+    <div class="obv-dossier">
+      
+      <!-- DOSSIER HEADER -->
+      <div class="obv-dossier__header">
+        <div class="obv-dossier__classification">
+          <i class="fas fa-id-card"></i> AGENT DOSSIER : CLASSIFIED
+        </div>
+        <div class="obv-dossier__title-group">
+          <h1 class="obv-dossier__title">{{ user.name }}</h1>
+          {% if user.team_id %}
+            <a href="{{ url_for('teams.public', team_id=user.team_id) }}" class="obv-badge obv-badge--primary">
+              <i class="fas fa-users"></i> {{ user.team.name }}
+            </a>
+          {% endif %}
+        </div>
+        
+        <div class="obv-dossier__meta">
+          {% if user.oauth_id %}
+            <span class="obv-badge obv-badge--info"><i class="fas fa-check-circle"></i> {% trans %}OFFICIAL{% endtrans %}</span>
+          {% endif %}
+          
+          {% if user.affiliation %}
+            <span class="obv-badge obv-badge--secondary"><i class="fas fa-building"></i> {{ user.affiliation }}</span>
+          {% endif %}
+          
+          {% if user.country %}
+            <span class="obv-badge obv-badge--secondary">
+              <i class="flag-{{ user.country.lower() }}"></i>
+              {{ lookup_country_code(user.country) }}
+            </span>
+          {% endif %}
+          
+          {% if user.bracket_id %}
+            <span class="obv-badge obv-badge--warning"><i class="fas fa-layer-group"></i> {{ user.bracket.name }}</span>
+          {% endif %}
+        </div>
+        
+        {% if user.fields %}
+          <div class="obv-dossier__custom-fields">
+            {% for field in user.fields %}
+              <div class="obv-stat">
+                <span class="obv-stat__label">{{ field.name }}</span>
+                <span class="obv-stat__value">{{ field.value }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <div class="obv-dossier__stats">
+          <div class="obv-stat obv-stat--lg">
+            <span class="obv-stat__label">GLOBAL RANK</span>
+            <span class="obv-stat__value obv-text-primary">
+              {% if account.place %}{{ account.place }}{% else %}N/A{% endif %}
+            </span>
+          </div>
+          <div class="obv-stat obv-stat--lg">
+            <span class="obv-stat__label">REPUTATION</span>
+            <span class="obv-stat__value obv-text-success">
+              {% if account %}{{ account.get_score(admin=True) }}{% else %}0{% endif %}
+            </span>
+          </div>
+        </div>
+
+        {% if user.website %}
+          <div class="obv-dossier__links">
+            <a href="{{ user.website }}" target="_blank" rel="noopener" class="obv-btn obv-btn--secondary obv-btn--sm">
+              <i class="fas fa-external-link-alt"></i> EXTERNAL DATALINK
+            </a>
+          </div>
+        {% endif %}
+      </div>
+      
+      <!-- DOSSIER BODY -->
+      <div class="obv-dossier__body">
+        {% include "components/errors.html" %}
+
+        {% set solves = user.solves %}
+        {% set awards = user.awards %}
+
+        {% if solves or awards %}
+          
+          {% if awards %}
+            <div class="obv-section">
+              <h3 class="obv-section__title"><i class="fas fa-medal"></i> COMMENDATIONS</h3>
+              <div class="obv-grid obv-grid--4">
+                {% for award in awards %}
+                  <div class="obv-card obv-card--award">
+                    <div class="obv-card__icon">
+                      <i class="award-icon award-{{ award.icon }} fa-2x"></i>
+                    </div>
+                    <div class="obv-card__title">{{ award.name }}</div>
+                    {% if award.category %}<div class="obv-card__meta">{{ award.category }}</div>{% endif %}
+                    {% if award.description %}<div class="obv-card__meta">{{ award.description }}</div>{% endif %}
+                    <div class="obv-card__score">+{{ award.value }}</div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+
+          <div class="obv-section mt-5">
+            <h3 class="obv-section__title"><i class="fas fa-tasks"></i> COMPLETED MISSIONS</h3>
+            <div class="obv-table-wrapper">
+              <table class="obv-table">
+                <thead>
+                  <tr>
+                    <th>{% trans %}MISSION{% endtrans %}</th>
+                    <th class="d-none d-md-table-cell">{% trans %}CATEGORY{% endtrans %}</th>
+                    <th>{% trans %}VALUE{% endtrans %}</th>
+                    <th>{% trans %}TIMESTAMP{% endtrans %}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for solve in solves %}
+                    <tr>
+                      <td>
+                        <a href="{{ url_for('challenges.listing') }}#{{ solve.challenge.name }}-{{ solve.challenge.id }}" class="obv-link">
+                          {{ solve.challenge.name }}
+                        </a>
+                      </td>
+                      <td class="d-none d-md-table-cell">{{ solve.challenge.category }}</td>
+                      <td class="obv-text-success">+{{ solve.challenge.value }}</td>
+                      <td class="solve-time">
+                        <span data-time="{{ solve.date | isoformat }}"></span>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TELEMETRY / GRAPHS -->
+          <div class="obv-section mt-5" x-data="UserGraphs">
+            <h3 class="obv-section__title"><i class="fas fa-chart-network"></i> PERFORMANCE TELEMETRY</h3>
+            
+            <div class="obv-grid obv-grid--2 mb-4">
+              <!-- Solve vs Fail -->
+              <div class="obv-card obv-card--chart">
+                <h4 class="obv-card__subtitle">SUCCESS RATE</h4>
+                <div class="obv-progress-bar">
+                  <div class="obv-progress-bar__fill bg-success" :style="{ width: `${getSolvePercentage()}%` }"></div>
+                  <div class="obv-progress-bar__fill bg-danger" :style="{ width: `${getFailPercentage()}%` }"></div>
+                </div>
+                <div class="obv-chart-legend">
+                  <span class="obv-legend-item text-success"><i class="fas fa-circle"></i> <span x-text="`SOLVES (${getSolvePercentage()}%)`"></span></span>
+                  <span class="obv-legend-item text-danger"><i class="fas fa-circle"></i> <span x-text="`FAILS (${getFailPercentage()}%)`"></span></span>
+                </div>
+              </div>
+
+              <!-- Category Breakdown -->
+              <div class="obv-card obv-card--chart">
+                <h4 class="obv-card__subtitle">CATEGORY SPREAD</h4>
+                <div class="obv-progress-bar">
+                  <template x-for="category in getCategoryBreakdown()" :key="category.name">
+                    <div class="obv-progress-bar__fill" :style="{ width: `${category.percent}%`, 'background-color': category.color }"></div>
+                  </template>
+                </div>
+                <div class="obv-chart-legend">
+                  <template x-for="category in getCategoryBreakdown()" :key="category.name">
+                    <span class="obv-legend-item" :style="{ color: category.color }">
+                      <i class="fas fa-circle"></i> <span x-text="`${category.name.toUpperCase()} (${category.percent}%)`"></span>
+                    </span>
+                  </template>
+                </div>
+              </div>
+            </div>
+
+            <!-- Score Graph -->
+            <div class="obv-card obv-card--chart p-4">
+              <div id="score-graph" x-ref="scoregraph" class="w-100" style="min-height: 300px;">
+                <div class="obv-loader">
+                  <i class="fas fa-circle-notch fa-spin fa-3x"></i>
+                  <p>CALIBRATING TELEMETRY...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        {% else %}
+          <div class="obv-empty-state">
+            <i class="fas fa-ghost"></i>
+            <p>NO INTELLIGENCE GATHERED YET</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ Assets.js("assets/js/users/private.js") }}
+{% endblock %}
+

@@ -1,0 +1,297 @@
+<div :class="getStyles()" role="document" x-data="Challenge" x-init='id = {{ challenge.id }}; max_attempts = {{ max_attempts }}; attempts = {{ attempts }}; ratingValue = {{ (rating.get('value') if rating else None) | tojson }}; ratingReview = {{ (rating.get('review', '') if rating else None) | tojson }};'>
+  <div class="modal-content obv-intel-doc">
+    <div class="obv-intel-doc__header">
+      <div class="obv-intel-doc__classification">
+        <i class="fas fa-shield-alt"></i> TOP SECRET // NOFORN
+      </div>
+      <button type="button" class="obv-intel-doc__close" data-bs-dismiss="modal" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="obv-intel-doc__nav-wrapper">
+      <ul class="nav nav-tabs obv-intel-tabs">
+        <li class="nav-item obv-intel-tab">
+          <button class="nav-link obv-intel-tab__link active" data-bs-target="#challenge" @click="showChallenge()">
+            <i class="fas fa-file-alt"></i> {% trans %}Mission Brief{% endtrans %}
+          </button>
+        </li>
+
+        {% block submissions %}
+          {% if Configs.view_self_submissions %}
+          <li class="nav-item obv-intel-tab">
+            <button class="nav-link obv-intel-tab__link challenge-submissions" data-bs-target="#submissions" @click="showSubmissions()">
+              {% if solves != None %}<i class="fas fa-history"></i> Log{% endif %}
+            </button>
+          </li>
+          {% endif %}
+        {% endblock %}
+
+        {% block solution %}
+          <li class="nav-item obv-intel-tab" x-show="getSolutionId()">
+            <button class="nav-link obv-intel-tab__link challenge-solution" data-bs-target="#solution" @click="showSolution()">
+              <i class="fas fa-key"></i> {% trans %}Solution{% endtrans %}
+            </button>
+          </li>
+        {% endblock %}
+
+        {% block solves %}
+          {% if solves != None %}
+          <li class="nav-item obv-intel-tab">
+            <button class="nav-link obv-intel-tab__link challenge-solves" data-bs-target="#solves" @click="showSolves()">
+              <i class="fas fa-users"></i> {{ ngettext("%(num)d Clearance", "%(num)d Clearances", solves) }}
+            </button>
+          </li>
+          {% endif %}
+        {% endblock %}
+      </ul>
+    </div>
+
+    <div class="modal-body obv-intel-doc__body">
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade show active obv-intel-pane" id="challenge">
+          
+          <div class="obv-intel-mission-info">
+            <h2 class="obv-intel-title">{{ challenge.name }}</h2>
+            <div class="obv-intel-meta">
+              <span class="obv-intel-value">{{ challenge.value }} PTS</span>
+              {% block attribution %}<span class="obv-intel-author">OP: {{ challenge.byline }}</span>{% endblock %}
+            </div>
+
+            {% if tags %}
+              <div class="obv-intel-tags">
+                {% block tags %}
+                  {% for tag in tags %}
+                    <span class="obv-tag">{{ tag }}</span>
+                  {% endfor %}
+                {% endblock %}
+              </div>
+            {% endif %}
+
+            {% if Configs.challenge_ratings == "public" %}
+              <div class="obv-intel-ratings">
+                {% block ratings %}
+                  {% if ratings %}
+                    <span class="obv-rating obv-rating--up"><i class="fa-solid fa-thumbs-up"></i> {{ ratings.up }}</span>
+                    {% if ratings.count %}
+                    <span class="obv-rating-percent">{{ ((ratings.up / (ratings.count)) * 100) | int }}% APP</span>
+                    {% endif %}
+                    <span class="obv-rating obv-rating--down"><i class="fa-solid fa-thumbs-down"></i> {{ ratings.down }}</span>
+                  {% endif %}
+                {% endblock %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="obv-intel-desc">
+            {% block description %}{{ challenge.html }}{% endblock %}
+          </div>
+
+          {% if challenge.connection_info %}
+            <div class="obv-intel-connection">
+              <div class="obv-intel-connection__label">TARGET UPLINK</div>
+              {% block connection_info %}
+                {% set conn = challenge.connection_info %}
+                {% if not conn %}
+                {% elif conn.startswith("http") %}
+                  {{ conn | urlize(target="_blank") }}
+                {% else %}
+                  <code>{{ conn }}</code>
+                {% endif %}
+              {% endblock %}
+            </div>
+          {% endif %}
+
+          {% if hints %}
+            <div class="obv-intel-hints">
+              <h4 class="obv-intel-section-title">{% trans %}Intelligence Briefs{% endtrans %}</h4>
+              <div class="obv-intel-hints__list">
+                {% for hint in hints | sort(attribute="cost") %}
+                  <div class="obv-intel-hint" x-data="Hint" x-init="id = {{ hint.id }}">
+                    {% if hint.content %}
+                    <details class="obv-intel-details">
+                      <summary>{% trans %}View Hint{% endtrans %}{% if hint.title %}: {{ hint.title }}{% endif %}</summary>
+                      <div class="obv-intel-details__content">{{ hint.html | safe }}</div>
+                    </details>
+                    {% else %}
+                    <details class="obv-intel-details" @toggle="showHint(event)">
+                      {% if hint.title %}
+                      <summary>{{ hint.title }} (Cost: {{ hint.cost }} PTS)</summary>
+                      {% else %}
+                      <summary>Decrypt Hint (Cost: {{ hint.cost }} PTS)</summary>
+                      {% endif %}
+                      <div class="obv-intel-details__content" x-html="html"></div>
+                    </details>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+
+          {% if files %}
+            <div class="obv-intel-files">
+              <h4 class="obv-intel-section-title">{% trans %}Recovered Evidence{% endtrans %}</h4>
+              <div class="obv-intel-files__grid">
+                {% for file in files %}
+                  {% set segments = file.split('/') %}
+                  {% set token = file.split('?') | last %}
+                  {% if token %}
+                    {% set filename = segments | last | replace("?" + token, "") %}
+                  {% else %}
+                    {% set filename = segments | last %}
+                  {% endif %}
+                  <a class="obv-file-btn" href="{{ file }}" title="{{ filename }}">
+                    <i class="fas fa-download"></i>
+                    <span>{{ filename }}</span>
+                  </a>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+
+          <div class="obv-intel-terminal">
+            <template x-if="max_attempts > 0">
+              <div class="obv-terminal-attempts">
+                <i class="fas fa-crosshairs"></i> ATTEMPTS: <span x-text="attempts"></span> / <span x-text="max_attempts"></span>
+              </div>
+            </template>
+            
+            <div class="obv-terminal-input-group">
+              {% block input %}
+                <input id="challenge-id" class="challenge-id" type="hidden" value="{{ challenge.id }}">
+                <div class="obv-terminal-prompt">root@soc:~#</div>
+                <input
+                    id="challenge-input" class="obv-input challenge-input"
+                    type="text" name="submission"
+                    @keyup.enter="submitChallenge()"
+                    placeholder="ENTER_FLAG_HERE" x-model="submission"
+                >
+              {% endblock %}
+              {% block submit %}
+                <button
+                    id="challenge-submit"
+                    class="obv-btn obv-btn--primary challenge-submit" type="submit"
+                    @click.debounce.500ms="submitChallenge()"
+                >
+                  <i class="fas fa-terminal"></i> {% trans %}EXECUTE{% endtrans %}
+                </button>
+              {% endblock %}
+            </div>
+          </div>
+
+          <div class="obv-intel-notifications">
+            <template x-if="response">
+              <div class="obv-alert"
+                  :class="{
+                    'obv-alert--success': response.data.status == 'correct',
+                    'obv-alert--info': response.data.status == 'already_solved',
+                    'obv-alert--danger': response.data.status == 'incorrect',
+                    'obv-alert--warning': response.data.status == 'paused',
+                  }" role="alert"
+              >
+                <div class="obv-alert__icon">
+                  <i class="fas" :class="{
+                    'fa-check-circle': response.data.status == 'correct' || response.data.status == 'already_solved',
+                    'fa-times-circle': response.data.status == 'incorrect',
+                    'fa-exclamation-triangle': response.data.status == 'paused'
+                  }"></i>
+                </div>
+                <div class="obv-alert__message">
+                  <strong x-text="response.data.message"></strong>
+                  
+                  <div x-show="(response.data.status == 'correct' || response.data.status == 'already_solved')">
+                    <div x-show="getNextId()" class="mt-2">
+                      <button @click="nextChallenge()" class="obv-btn obv-btn--info">
+                        {% trans %}NEXT OPERATION{% endtrans %} <i class="fas fa-arrow-right"></i>
+                      </button>
+                    </div>
+
+                    {% if Configs.challenge_ratings != "disabled" %}
+                    <div class="obv-rating-box mt-3">
+                      <p class="obv-rating-box__title">{% trans %}RATE THIS INTEL:{% endtrans %}</p>
+                      <div class="obv-rating-box__actions" x-init="selectedRating = ratingValue || 0;">
+                        <button class="obv-btn obv-btn--icon" :class="{ 'is-active text-success': selectedRating === 1 }" @click="selectedRating = 1">
+                          <i class="fa-solid fa-thumbs-up"></i>
+                        </button>
+                        <button class="obv-btn obv-btn--icon" :class="{ 'is-active text-danger': selectedRating === -1 }" @click="selectedRating = -1">
+                          <i class="fa-solid fa-thumbs-down"></i>
+                        </button>
+                        <button @click="submitRating()" class="obv-btn obv-btn--sm" :disabled="!selectedRating">
+                          {% trans %}SUBMIT RATING{% endtrans %}
+                        </button>
+                      </div>
+                      <div x-show="ratingSubmitted" class="text-success mt-2" style="font-size: 0.8rem;">
+                        <i class="fas fa-check"></i> {% trans %}RATING LOGGED{% endtrans %}
+                      </div>
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade obv-intel-pane" id="submissions">
+          <div class="obv-table-wrapper">
+            <table class="obv-table">
+              <thead>
+              <tr>
+                <th>{% trans %}Payload{% endtrans %}</th>
+                <th>{% trans %}Status{% endtrans %}</th>
+                <th>{% trans %}Timestamp{% endtrans %}</th>
+              </tr>
+              </thead>
+              <tbody id="challenge-submission-names">
+              <template x-for="submission in submissions">
+                <tr>
+                  <td x-data="{ truncate: true }" class="obv-table-cell-mono">
+                    <span x-text="truncate ? '*'.repeat(submission.provided.length) : submission.provided"></span>
+                    <button class="obv-btn obv-btn--icon obv-btn--xs ml-2" @click="truncate = !truncate">
+                      <i :class="truncate ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+                    </button>
+                  </td>
+                  <td><span class="obv-badge" :class="submission.type === 'correct' ? 'obv-badge--success' : 'obv-badge--danger'" x-text="submission.type"></span></td>
+                  <td class="obv-table-cell-mono" x-text="submission.date"></td>
+                </tr>
+              </template>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade obv-intel-pane" id="solves">
+          <div class="obv-table-wrapper">
+            <table class="obv-table">
+              <thead>
+              <tr>
+                <th>{% trans %}Agent / Squadron{% endtrans %}</th>
+                <th>{% trans %}Clearance Time{% endtrans %}</th>
+              </tr>
+              </thead>
+              <tbody id="challenge-solves-names">
+              <template x-for="solve in solves">
+                <tr>
+                  <td><a class="obv-link" :href="solve.account_url" x-text="solve.name"></a></td>
+                  <td class="obv-table-cell-mono" x-text="solve.date"></td>
+                </tr>
+              </template>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade obv-intel-pane" id="solution">
+          <div class="obv-intel-solution">
+            <template x-if="solution">
+              <div class="obv-intel-solution__content" x-html="solution"></div>
+            </template>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

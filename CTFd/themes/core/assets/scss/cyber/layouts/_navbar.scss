@@ -1,0 +1,204 @@
+.obv-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: var(--z-sticky);
+  background: rgba(15, 20, 28, 0.2); // Translucent background
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: var(--spacing-3) 0;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+    opacity: 0.5;
+  }
+}
+
+.obv-nav__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.obv-nav__brand {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  font-size: var(--font-size-lg);
+
+  img {
+    height: 48px;
+  }
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+.obv-nav__menu {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.obv-nav__links {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.obv-nav__item {
+  position: relative;
+}
+
+.obv-nav__link {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  padding: var(--spacing-2) var(--spacing-3);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--color-primary);
+    transition: width var(--motion-duration-medium) var(--motion-ease-out);
+  }
+
+  &:hover, &:focus-visible {
+    color: var(--color-primary);
+    &::before {
+      width: 100%;
+    }
+  }
+
+  &--active {
+    color: var(--color-text-primary);
+    &::before {
+      width: 100%;
+    }
+  }
+}
+
+.obv-nav__status {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding-left: var(--spacing-4);
+  border-left: 1px solid var(--color-border-strong);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-success);
+  text-transform: uppercase;
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--color-success);
+    border-radius: 50%;
+  }
+}
+
+// Mobile Toggler
+.obv-nav__toggler {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text-primary);
+  padding: var(--spacing-2);
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
+// Responsive logic
+@media (max-width: 768px) {
+  .obv-nav__menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: var(--color-bg-surface);
+    flex-direction: column;
+    padding: var(--spacing-4);
+    border-bottom: 1px solid var(--color-border-strong);
+    
+    &.is-open {
+      display: flex;
+    }
+  }
+  .obv-nav__links {
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+  }
+  .obv-nav__status {
+    border-left: none;
+    border-top: 1px solid var(--color-border-strong);
+    padding: var(--spacing-4) 0 0 0;
+    margin-top: var(--spacing-2);
+    width: 100%;
+  }
+}
+
+.obv-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: var(--spacing-2);
+  background: var(--color-bg-panel);
+  border: 1px solid var(--color-border-strong);
+  padding: var(--spacing-2);
+  min-width: 150px;
+  display: none;
+  z-index: var(--z-dropdown);
+
+  &.is-open {
+    display: block;
+  }
+  
+  &-item {
+    display: block;
+    padding: var(--spacing-2) var(--spacing-3);
+    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--color-bg-elevated);
+      color: var(--color-primary);
+    }
+  }
+}

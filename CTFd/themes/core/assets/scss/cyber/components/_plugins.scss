@@ -1,0 +1,20 @@
+@layer components {
+  /* 
+   * Operation Black Vault - Plugin Compatibility Layer
+   * This file ensures that popular CTFd plugins (e.g. CTFd-Whale) 
+   * inherit the base styling without breaking their layouts.
+   */
+
+  // General fallback for unknown injected forms
+  .plugin-form-container {
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-4);
+  }
+
+  // Ensure plugin tables inherit our styling
+  .plugin-table {
+    @extend .table;
+  }
+}

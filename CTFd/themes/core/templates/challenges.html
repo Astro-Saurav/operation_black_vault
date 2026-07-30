@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <header class="obv-page-header">
+    <div class="obv-container">
+      <div class="obv-page-header__content">
+        <h1 class="obv-title">
+          <i class="fas fa-satellite-dish"></i> {% trans %}Active Operations{% endtrans %}
+        </h1>
+        <div class="obv-page-header__meta">
+          <span>STATUS: SECURE</span> | <span>ENCRYPTION: AES-256</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="obv-container">
+    <div class="obv-alerts">
+      {% include "components/errors.html" %}
+    </div>
+
+    <div 
+      class="obv-operations-board"
+      x-data="ChallengeBoard" 
+      @load-challenges.window="loadChallenges()" 
+      @load-challenge.window="loadChallenge($event.detail)"
+    >
+      <div
+          x-ref="challengeWindow" id="challenge-window" class="modal fade" tabindex="-1" role="dialog" x-data=""
+          x-html="$store.challenge.data.view"
+      ></div>
+
+      <div x-show="!loaded" class="obv-loader-wrapper">
+        <div class="obv-loader">
+          <i class="fas fa-circle-notch fa-spin"></i>
+          <span>DECRYPTING INTEL...</span>
+        </div>
+      </div>
+
+      <div x-show="loaded" class="obv-categories">
+        <template x-for="(category, idx) in getCategories()" :key="idx">
+          <section class="obv-category">
+            <header class="obv-category__header">
+              <h3 x-text="category"></h3>
+              <div class="obv-category__line"></div>
+            </header>
+
+            <div class="obv-grid obv-grid--dossiers">
+              <template x-for="(c, idx) in getChallenges(category)" :key="c.id">
+                <button
+                    class="obv-dossier"
+                    :class="[
+                      c.solved_by_me ? 'is-solved' : '',
+                      ...c.tags.map((tag) => `tag-${tag.value.replace(/ /g, '-')}`)
+                    ]"
+                    :value="c.id" @click="loadChallenge(c.id)"
+                >
+                  <div class="obv-dossier__seal"></div>
+                  <div class="obv-dossier__header">
+                    <span class="obv-dossier__id" x-text="'OP-' + c.id.toString().padStart(4, '0')"></span>
+                    <span class="obv-dossier__points" x-text="c.value + ' PTS'"></span>
+                  </div>
+                  <div class="obv-dossier__body">
+                    <h4 class="obv-dossier__name" x-text="c.name"></h4>
+                    <div class="obv-dossier__status">
+                      <span x-show="c.solved_by_me" class="text-success"><i class="fas fa-check-circle"></i> CLEARED</span>
+                      <span x-show="!c.solved_by_me" class="text-warning"><i class="fas fa-lock"></i> CLASSIFIED</span>
+                    </div>
+                  </div>
+                  <div class="obv-dossier__footer">
+                    <i class="fas fa-folder-open"></i> VIEW DOSSIER
+                  </div>
+                </button>
+              </template>
+            </div>
+          </section>
+        </template>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ Assets.js("assets/js/challenges.js") }}
+{% endblock %}

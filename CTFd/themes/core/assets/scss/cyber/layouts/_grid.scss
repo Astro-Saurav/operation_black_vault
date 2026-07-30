@@ -1,0 +1,73 @@
+.obv-app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: transparent;
+  color: var(--color-text-main);
+  font-family: 'Inter', sans-serif;
+}
+
+.obv-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 140px 0 var(--spacing-8) 0;
+}
+
+.obv-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+
+  &--fluid {
+    max-width: 100%;
+  }
+  
+  &--narrow {
+    max-width: 800px;
+  }
+}
+
+.obv-grid {
+  display: grid;
+  gap: var(--spacing-md);
+  
+  &--2 { grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); }
+  &--3 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  &--4 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+  &--dossiers { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+}
+
+.obv-panel {
+  background: var(--color-bg-panel);
+  border: 1px solid var(--color-border-main);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-md);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--color-primary);
+    opacity: 0.5;
+  }
+}
+
+.obv-flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.obv-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
