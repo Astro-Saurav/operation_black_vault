@@ -20,28 +20,20 @@ This project is fully containerized using Docker and Docker Compose. Because all
    - Configure your Security Group to allow inbound traffic on **HTTP (Port 80)**, **HTTPS (Port 443)**, and **SSH (Port 22)** from anywhere.
    - Launch the instance and SSH into it.
 
-2. **Install Docker & Git:**
-   ```bash
-   sudo apt update
-   sudo apt install -y git docker.io docker-compose-v2
-   sudo systemctl enable --now docker
-   sudo usermod -aG docker ubuntu
-   ```
-   *(Note: You may need to log out and log back in for the `usermod` group change to take effect).*
-
-3. **Clone the Repository:**
+2. **Clone the Repository:**
+   (Ubuntu 22.04 comes with Git pre-installed. If not, run `sudo apt update && sudo apt install git`).
    ```bash
    git clone https://github.com/Astro-Saurav/operation_black_vault.git
    cd operation_black_vault
    ```
 
-4. **Deploy the Platform:**
+3. **Deploy the Platform:**
    ```bash
    python3 run.py
    ```
    The `run.py` script automatically verifies dependencies, generates a secure `.ctfd_secret_key`, and brings up the Docker containers. You can stop the platform cleanly at any time by running `python3 stop.py`.
 
-5. **Access the Platform:**
+4. **Access the Platform:**
    Find your EC2 instance's **Public IPv4 Address** or **Public IPv4 DNS** in the AWS console and visit it in your browser (`http://<YOUR_AWS_IP>`).
 
 ---
@@ -56,27 +48,20 @@ This project is fully containerized using Docker and Docker Compose. Because all
    - Under **Inbound port rules**, allow **SSH (22)**, **HTTP (80)**, and **HTTPS (443)**.
    - Click **Review + Create** and launch the VM. Once running, SSH into it.
 
-2. **Install Docker & Git:**
-   ```bash
-   sudo apt update
-   sudo apt install -y git docker.io docker-compose-v2
-   sudo systemctl enable --now docker
-   sudo usermod -aG docker azureuser
-   ```
-
-3. **Clone the Repository:**
+2. **Clone the Repository:**
+   (Ubuntu 22.04 comes with Git pre-installed. If not, run `sudo apt update && sudo apt install git`).
    ```bash
    git clone https://github.com/Astro-Saurav/operation_black_vault.git
    cd operation_black_vault
    ```
 
-4. **Deploy the Platform:**
+3. **Deploy the Platform:**
    ```bash
    python3 run.py
    ```
    The `run.py` script automatically verifies dependencies, generates a secure `.ctfd_secret_key`, and brings up the Docker containers. You can stop the platform cleanly at any time by running `python3 stop.py`.
 
-5. **Access the Platform:**
+4. **Access the Platform:**
    Find your VM's **Public IP address** in the Azure portal and visit it in your browser (`http://<YOUR_AZURE_IP>`).
 
 ---
