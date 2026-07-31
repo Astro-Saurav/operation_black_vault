@@ -36,24 +36,54 @@ def check_docker():
         print_error("Docker is not installed or not in your PATH.")
         if sys.platform == "win32":
             print("Please download and install Docker Desktop for Windows: https://docs.docker.com/desktop/install/windows/")
+            sys.exit(1)
         elif sys.platform == "darwin":
             print("Please download and install Docker Desktop for Mac: https://docs.docker.com/desktop/install/mac-install/")
+            sys.exit(1)
+        elif sys.platform.startswith("linux"):
+            if check_command("apt"):
+                print_step("Ubuntu/Debian detected. Attempting to install Docker automatically...")
+                print("This requires sudo privileges.")
+                try:
+                    subprocess.run(["sudo", "apt", "update"], check=True)
+                    subprocess.run(["sudo", "apt", "install", "-y", "git", "docker.io", "docker-compose-v2"], check=True)
+                    subprocess.run(["sudo", "systemctl", "enable", "--now", "docker"], check=True)
+                    
+                    user = os.environ.get("USER", "ubuntu")
+                    subprocess.run(["sudo", "usermod", "-aG", "docker", user], check=True)
+                    print_success("Docker installed successfully!")
+                    print_step("NOTE: You may need to log out and log back in for the docker group permissions to apply.")
+                    print_step("We will use 'sudo' for the remainder of this setup just in case.")
+                except subprocess.CalledProcessError:
+                    print_error("Failed to automatically install Docker. Please install it manually.")
+            else:
+                print("Please install Docker manually for your Linux distribution.")
+                sys.exit(1)
         else:
-            print("Please install Docker: curl -fsSL https://get.docker.com | sh")
-        sys.exit(1)
-        
+            sys.exit(1)
+            
     # Check if 'docker compose' (v2) or 'docker-compose' (v1) is available
     compose_cmd = None
+    use_sudo = False
+    
+    # Check if we have docker access without sudo
+    try:
+        subprocess.run(["docker", "ps"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        print_step("Docker requires sudo privileges for the current user. Using sudo.")
+        use_sudo = True
+
+    prefix = ["sudo"] if use_sudo else []
+
     try:
         # Check docker compose (V2)
-        subprocess.run(["docker", "compose", "version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        compose_cmd = ["docker", "compose"]
+        subprocess.run(prefix + ["docker", "compose", "version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        compose_cmd = prefix + ["docker", "compose"]
     except (subprocess.CalledProcessError, FileNotFoundError):
         if check_command("docker-compose"):
-            compose_cmd = ["docker-compose"]
+            compose_cmd = prefix + ["docker-compose"]
         else:
             print_error("Docker Compose is not installed.")
-            print("Please ensure Docker Compose is installed and available in your PATH.")
             sys.exit(1)
             
     print_success(f"Found Docker and Compose: {' '.join(compose_cmd)}")
