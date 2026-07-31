@@ -12,12 +12,19 @@ Designed for immersive cybersecurity training and competitive operations, this p
 
 ## Quick Start (Deployment)
 
-Because this repository contains the fully customized source code and compiled assets, you can deploy it instantly using Docker.
+This repository comes with automated setup scripts that make deploying the customized containerized environment completely frictionless across Linux, macOS, and Windows.
 
 ```bash
 git clone https://github.com/Astro-Saurav/operation_black_vault.git
 cd operation_black_vault
-docker compose up -d --build
+python3 run.py
+```
+
+The script will automatically check for dependencies, generate a secure `.ctfd_secret_key`, and launch all Docker containers in the background.
+
+To cleanly shut down the platform at any time, run:
+```bash
+python3 stop.py
 ```
 
 For detailed production deployment instructions (AWS EC2 / Microsoft Azure), please refer to our comprehensive [DEPLOYMENT.md](DEPLOYMENT.md) guide.

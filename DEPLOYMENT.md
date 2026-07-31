@@ -37,9 +37,9 @@ This project is fully containerized using Docker and Docker Compose. Because all
 
 4. **Deploy the Platform:**
    ```bash
-   docker compose up -d --build
+   python3 run.py
    ```
-   The `--build` flag ensures that any local theme updates (like CSS assets) are properly compiled into the Docker image.
+   The `run.py` script automatically verifies dependencies, generates a secure `.ctfd_secret_key`, and brings up the Docker containers. You can stop the platform cleanly at any time by running `python3 stop.py`.
 
 5. **Access the Platform:**
    Find your EC2 instance's **Public IPv4 Address** or **Public IPv4 DNS** in the AWS console and visit it in your browser (`http://<YOUR_AWS_IP>`).
@@ -72,8 +72,9 @@ This project is fully containerized using Docker and Docker Compose. Because all
 
 4. **Deploy the Platform:**
    ```bash
-   docker compose up -d --build
+   python3 run.py
    ```
+   The `run.py` script automatically verifies dependencies, generates a secure `.ctfd_secret_key`, and brings up the Docker containers. You can stop the platform cleanly at any time by running `python3 stop.py`.
 
 5. **Access the Platform:**
    Find your VM's **Public IP address** in the Azure portal and visit it in your browser (`http://<YOUR_AZURE_IP>`).
